@@ -631,3 +631,32 @@ func TestNewV5(t *testing.T) {
 		t.Errorf("UUIDv3 generated same UUIDs for sane names in different namespaces: %s and %s", u1, u4)
 	}
 }
+
+func TestNewV5NameOnly(t *testing.T) {
+	u := NewV5NameOnly("www.example.com")
+
+	if u.Version() != 5 {
+		t.Errorf("UUIDv5 generated with incorrect version: %d", u.Version())
+	}
+
+	if u.Variant() != VariantRFC4122 {
+		t.Errorf("UUIDv5 generated with incorrect variant: %d", u.Variant())
+	}
+
+	u = NewV5NameOnly("python.org")
+
+	if u.String() != "f0087280-16e4-5bd6-b449-56070bb83edb" {
+		t.Errorf("UUIDv5 generated incorrectly: %s", u.String())
+	}
+
+	u1 := NewV5NameOnly("golang.org")
+	u2 := NewV5NameOnly("golang.org")
+	if !Equal(u1, u2) {
+		t.Errorf("UUIDv5 generated different UUIDs for same namespace and name: %s and %s", u1, u2)
+	}
+
+	u3 := NewV5NameOnly("example.com")
+	if Equal(u1, u3) {
+		t.Errorf("UUIDv5 generated same UUIDs for different names in same namespace: %s and %s", u1, u2)
+	}
+}

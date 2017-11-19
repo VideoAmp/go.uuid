@@ -83,6 +83,12 @@ func BenchmarkNewV5(b *testing.B) {
 	}
 }
 
+func BenchmarkNewV5NameOnly(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		NewV5NameOnly("www.example.com")
+	}
+}
+
 func BenchmarkMarshalBinary(b *testing.B) {
 	u := NewV4()
 	for i := 0; i < b.N; i++ {

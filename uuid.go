@@ -479,3 +479,21 @@ func newFromHash(h hash.Hash, ns UUID, name string) UUID {
 
 	return u
 }
+
+// Returns UUID based on hashing of just a name.
+func newFromHashNameOnly(h hash.Hash, name string) UUID {
+	u := UUID{}
+	h.Write([]byte(name))
+	copy(u[:], h.Sum(nil))
+
+	return u
+}
+
+// NewV5 returns UUID based on SHA-1 hash of just a name.
+func NewV5NameOnly(name string) UUID {
+	u := newFromHashNameOnly(sha1.New(), name)
+	u.SetVersion(5)
+	u.SetVariant()
+
+	return u
+}
